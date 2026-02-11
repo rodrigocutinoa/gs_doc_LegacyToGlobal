@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Estrategia de Migración xDoc Global - Biblia de Gobernanza</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #f1f5f9; color: #334155; }
+        .step-card { transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); cursor: pointer; }
+        .step-card:hover { transform: translateY(-4px); box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1); }
+        .active-step { border-color: #4f46e5 !important; background-color: #f8fafc !important; ring: 2px; ring-color: #4f46e5; }
+        .flow-line { height: 2px; background: linear-gradient(90deg, #4f46e5 0%, #cbd5e1 100%); flex-grow: 1; }
+        .chart-container { position: relative; width: 100%; max-width: 250px; margin: 0 auto; height: 180px; }
+        .workflow-svg { width: 100%; height: auto; max-width: 900px; }
+        .node-label { font-size: 10px; font-weight: 700; fill: #1e293b; }
+        .node-box { fill: #ffffff; stroke: #e2e8f0; stroke-width: 1.5; }
+        .node-box.active { fill: #f5f3ff; stroke: #4f46e5; }
+        .arrow { fill: #94a3b8; }
+        .highlight-area { border-left: 4px solid #4f46e5; padding-left: 1rem; margin-bottom: 1.5rem; }
+    </style>
+</head>
+<body class="p-4 md:p-8">
+
+    <div class="max-w-7xl mx-auto">
+        <!-- Header -->
+        <header class="mb-8 flex flex-col md:flex-row md:items-center justify-between gap-4">
+            <div>
+                <div class="flex items-center gap-3 mb-2">
+                    <div class="w-12 h-12 bg-slate-900 rounded-xl flex items-center justify-center text-white font-bold shadow-lg text-xl">XD</div>
+                    <h1 class="text-3xl font-extrabold text-slate-900 tracking-tight">xDoc <span class="text-indigo-600">Migration Bible</span></h1>
+                </div>
+                <p class="text-slate-500 text-sm">Guía Maestra de Gobernanza: Del Legacy al Ecosistema Global.</p>
+            </div>
+            <div class="flex gap-2">
+                <span class="px-3 py-1 bg-indigo-100 text-indigo-700 rounded-full text-[10px] font-bold border border-indigo-200">SOPORTE + CONSULTORÍA</span>
+                <span class="px-3 py-1 bg-rose-100 text-rose-700 rounded-full text-[10px] font-bold border border-rose-200 flex items-center gap-1">
+                    <span class="w-2 h-2 bg-rose-500 rounded-full animate-pulse"></span> PROTOCOLO V4.1
+                </span>
+            </div>
+        </header>
+
+        <!-- Workflow Diagram with QA-Dev Loop -->
+        <section class="mb-10 bg-white p-6 rounded-3xl border border-slate-200 shadow-sm overflow-x-auto">
+            <h2 class="text-lg font-bold text-slate-800 mb-6 flex items-center gap-2">
+                <span>🔄</span> Flujo de Trabajo y Ciclos de Retroalimentación
+            </h2>
+            <div class="flex justify-center">
+                <svg viewBox="0 0 900 280" class="workflow-svg">
+                    <defs>
+                        <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="0" refY="3.5" orient="auto">
+                            <polygon points="0 0, 10 3.5, 0 7" class="arrow" />
+                        </marker>
+                    </defs>
+
+                    <!-- Stage 1: Producto -->
+                    <rect x="20" y="100" width="150" height="80" rx="12" class="node-box" />
+                    <text x="95" y="140" text-anchor="middle" class="node-label">PRODUCTO & DEV</text>
+                    <text x="95" y="155" text-anchor="middle" class="text-[8px] fill-slate-400">Core Engine Global</text>
+
+                    <!-- Connection 1 -->
+                    <line x1="170" y1="140" x2="220" y2="140" stroke="#cbd5e1" stroke-width="2" marker-end="url(#arrowhead)" />
+
+                    <!-- Stage 2: QA Central -->
+                    <rect x="230" y="100" width="150" height="80" rx="12" class="node-box" />
+                    <text x="305" y="140" text-anchor="middle" class="node-label">QA CENTRAL</text>
+                    <text x="305" y="155" text-anchor="middle" class="text-[8px] fill-slate-400">Certificación Interna</text>
+
+                    <!-- FEEDBACK LOOP: QA -> PRODUCTO (New) -->
+                    <path d="M305 100 Q305 60, 200 60 T95 100" fill="none" stroke="#6366f1" stroke-width="1.5" stroke-dasharray="4" marker-end="url(#arrowhead)" />
+                    <text x="200" y="50" text-anchor="middle" class="text-[8px] fill-indigo-600 font-bold italic">RECHAZO TÉCNICO (Internal Bug)</text>
+
+                    <!-- Connection 2 -->
+                    <line x1="380" y1="140" x2="430" y2="140" stroke="#cbd5e1" stroke-width="2" marker-end="url(#arrowhead)" />
+
+                    <!-- Stage 3: Implementación -->
+                    <rect x="440" y="100" width="150" height="80" rx="12" class="node-box active" />
+                    <text x="515" y="140" text-anchor="middle" class="node-label">IMPLEMENTACIÓN</text>
+                    <text x="515" y="155" text-anchor="middle" class="text-[8px] fill-indigo-500 font-bold">QA Cliente / UAT</text>
+
+                    <!-- LOOP: IMPLEMENTACION -> PRODUCTO (Jira) -->
+                    <path d="M515 100 Q515 20, 305 20 T95 100" fill="none" stroke="#f43f5e" stroke-width="2" stroke-dasharray="4" marker-end="url(#arrowhead)" />
+                    <text x="305" y="15" text-anchor="middle" class="text-[9px] fill-rose-600 font-bold italic">BUG JIRA (Gap Funcional/Migration)</text>
+
+                    <!-- Connection 3 -->
+                    <line x1="590" y1="140" x2="640" y2="140" stroke="#cbd5e1" stroke-width="2" marker-end="url(#arrowhead)" />
+
+                    <!-- Stage 4: Soporte -->
+                    <rect x="650" y="100" width="150" height="80" rx="12" class="node-box" />
+                    <text x="725" y="140" text-anchor="middle" class="node-label">SOPORTE</text>
+                    <text x="725" y="155" text-anchor="middle" class="text-[8px] fill-slate-400">Ambiente Producción</text>
+
+                    <!-- Post-Live Loop -->
+                    <path d="M725 180 Q725 240, 410 240 T95 180" fill="none" stroke="#f43f5e" stroke-width="2" stroke-dasharray="4" marker-end="url(#arrowhead)" />
+                    <text x="410" y="255" text-anchor="middle" class="text-[9px] fill-rose-600 font-bold italic">INCIDENTE PROD (Retorno a Sandbox QA)</text>
+                </svg>
+            </div>
+        </section>
+
+        <!-- Manual por Área (Biblia de Migración) -->
+        <section class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-10">
+            <!-- Columna Izquierda: Producto y QA -->
+            <div class="space-y-6">
+                <div class="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-8 h-8 bg-indigo-600 rounded-lg flex items-center justify-center text-white text-xs">💻</div>
+                        <h3 class="font-bold text-slate-900 uppercase text-xs tracking-widest">Área: Producto & Desarrollo</h3>
+                    </div>
+                    <ul class="text-xs text-slate-600 space-y-3">
+                        <li class="highlight-area"><strong>Estándar de Release:</strong> Todo fix debe ser entregado mediante un RC (Release Candidate) con su respectivo <em>Changelog</em> detallado.</li>
+                        <li class="highlight-area"><strong>Versionamiento:</strong> Mantener paridad entre el Core Global y los scripts de migración Legacy. No se permiten "parches calientes" fuera de versión.</li>
+                        <li class="highlight-area"><strong>Soporte Nivel 3:</strong> Atender tickets Jira escalados por Implementación que presenten inconsistencias en el motor de base de datos.</li>
+                    </ul>
+                </div>
+                <div class="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-8 h-8 bg-purple-600 rounded-lg flex items-center justify-center text-white text-xs">🔍</div>
+                        <h3 class="font-bold text-slate-900 uppercase text-xs tracking-widest">Área: QA Central</h3>
+                    </div>
+                    <ul class="text-xs text-slate-600 space-y-3">
+                        <li class="highlight-area"><strong>Certificación:</strong> Validar que el RC solucione el bug reportado sin romper funcionalidades Core existentes (Regresión).</li>
+                        <li class="highlight-area"><strong>Evidencia Técnica:</strong> Generar reporte de ejecución de pruebas para que Consultoría tenga base técnica ante el cliente.</li>
+                        <li class="highlight-area"><strong>Ambientes:</strong> Controlar que el Sandbox de QA interno refleje fielmente las condiciones de un Legacy estándar.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Columna Derecha: Implementación y Soporte -->
+            <div class="space-y-6">
+                <div class="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-8 h-8 bg-amber-500 rounded-lg flex items-center justify-center text-white text-xs">🚀</div>
+                        <h3 class="font-bold text-slate-900 uppercase text-xs tracking-widest">Área: Implementación / Consultoría</h3>
+                    </div>
+                    <ul class="text-xs text-slate-600 space-y-3">
+                        <li class="highlight-area"><strong>Gobernanza del Dato:</strong> Responsable de la limpieza del Legacy antes de iniciar la migración. "Basura entra, basura sale".</li>
+                        <li class="highlight-area"><strong>Gestión de Jira:</strong> Reportar bugs con: Log de error, pasos de reproducción y base de datos de ejemplo (insumo crítico).</li>
+                        <li class="highlight-area"><strong>UAT (Aceptación):</strong> Obtener la firma del cliente en ambiente QA antes de mover cualquier bit a Producción.</li>
+                    </ul>
+                </div>
+                <div class="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-8 h-8 bg-emerald-600 rounded-lg flex items-center justify-center text-white text-xs">🎧</div>
+                        <h3 class="font-bold text-slate-900 uppercase text-xs tracking-widest">Área: Soporte</h3>
+                    </div>
+                    <ul class="text-xs text-slate-600 space-y-3">
+                        <li class="highlight-area"><strong>Estabilidad Post-Go-Live:</strong> Monitorear logs de performance durante los primeros 30 días tras la migración.</li>
+                        <li class="highlight-area"><strong>Triaje:</strong> Filtrar si el reporte del cliente es un error de migración (retorno a Implementación) o un bug del Core (Jira a Producto).</li>
+                        <li class="highlight-area"><strong>Manuales:</strong> Mantener actualizada la KB (Knowledge Base) con los errores comunes de transición Legacy-Global.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Pipeline Unificado e Interactivo -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-10">
+            <!-- Flow Interactivo -->
+            <div class="lg:col-span-2 bg-white rounded-3xl shadow-xl border border-slate-200 overflow-hidden flex flex-col">
+                <div class="p-6 border-b border-slate-100 bg-slate-50 flex justify-between items-center">
+                    <h2 class="font-bold text-slate-800">Pipeline de Migración Maestro</h2>
+                    <span class="text-[10px] font-bold text-slate-400">FASE ACTUAL: <span id="current-phase-label" class="text-indigo-600">ESTUDIO</span></span>
+                </div>
+                
+                <div class="p-8 flex-grow">
+                    <div class="flex flex-col md:flex-row items-center gap-2 mb-10">
+                        <div id="step1" onclick="showDetail(1)" class="step-card flex-1 p-3 rounded-xl border-2 border-slate-100 bg-white active-step text-center">
+                            <h4 class="font-bold text-slate-800 text-[10px] uppercase">1. Preparación</h4>
+                        </div>
+                        <div class="flow-line hidden md:block"></div>
+                        <div id="step2" onclick="showDetail(2)" class="step-card flex-1 p-3 rounded-xl border-2 border-slate-100 bg-white text-center">
+                            <h4 class="font-bold text-slate-800 text-[10px] uppercase">2. Validación</h4>
+                        </div>
+                        <div class="flow-line hidden md:block"></div>
+                        <div id="step3" onclick="showDetail(3)" class="step-card flex-1 p-3 rounded-xl border-2 border-slate-100 bg-white text-center">
+                            <h4 class="font-bold text-slate-800 text-[10px] uppercase">3. Certificación</h4>
+                        </div>
+                        <div class="flow-line hidden md:block"></div>
+                        <div id="step4" onclick="showDetail(4)" class="step-card flex-1 p-3 rounded-xl border-2 border-slate-100 bg-white text-center">
+                            <h4 class="font-bold text-slate-800 text-[10px] uppercase">4. Despliegue</h4>
+                        </div>
+                    </div>
+
+                    <div id="detail-panel" class="p-6 bg-indigo-50 rounded-2xl border border-indigo-100 min-h-[220px] transition-all duration-300">
+                        <!-- Dynamic Content -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Dashboard de Calidad -->
+            <div class="bg-white rounded-3xl shadow-xl border border-slate-200 p-6 flex flex-col">
+                <h3 class="font-bold text-slate-800 mb-4 flex items-center gap-2 text-sm">
+                    <span>🧪</span> Simulador de Estabilidad QA
+                </h3>
+                <div class="chart-container mb-6">
+                    <canvas id="qaChart"></canvas>
+                    <div class="absolute inset-0 flex items-center justify-center flex-col pt-4">
+                        <span id="health-pct" class="text-2xl font-extrabold text-slate-800">50%</span>
+                        <span class="text-[9px] text-slate-400 uppercase font-bold">Confianza</span>
+                    </div>
+                </div>
+                
+                <div class="space-y-2 mb-4 flex-grow">
+                    <button onclick="simulateAction('bug')" class="w-full p-3 bg-rose-50 border border-rose-100 rounded-xl text-left hover:bg-rose-100 transition group">
+                        <div class="flex justify-between items-center">
+                            <span class="text-[11px] font-bold text-rose-700">Reportar Bug Crítico</span>
+                            <span class="text-[8px] bg-rose-200 text-rose-700 px-2 py-0.5 rounded">JIRA</span>
+                        </div>
+                    </button>
+                    <button onclick="simulateAction('qa-internal')" class="w-full p-3 bg-indigo-50 border border-indigo-100 rounded-xl text-left hover:bg-indigo-100 transition">
+                        <div class="flex justify-between items-center">
+                            <span class="text-[11px] font-bold text-indigo-700">Aprobar QA Central</span>
+                            <span class="text-[8px] bg-indigo-200 text-indigo-700 px-2 py-0.5 rounded">DEV-LOOP</span>
+                        </div>
+                    </button>
+                    <button onclick="simulateAction('fix')" class="w-full p-3 bg-emerald-50 border border-emerald-100 rounded-xl text-left hover:bg-emerald-100 transition">
+                        <div class="flex justify-between items-center">
+                            <span class="text-[11px] font-bold text-emerald-700">Certificación UAT Exitosa</span>
+                            <span class="text-[8px] bg-emerald-200 text-emerald-700 px-2 py-0.5 rounded">PROD</span>
+                        </div>
+                    </button>
+                </div>
+
+                <div id="status-verdict" class="text-center p-3 rounded-xl bg-slate-100 text-slate-500 text-[10px] font-bold border border-slate-200 uppercase">
+                    ESTADO: EVALUANDO RIESGO
+                </div>
+            </div>
+        </div>
+
+        <!-- Matriz de Riesgos y Alertas -->
+        <section class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="bg-rose-900 text-rose-100 p-8 rounded-3xl shadow-lg relative overflow-hidden">
+                <div class="absolute top-0 right-0 p-4 opacity-10 text-6xl">⚠️</div>
+                <h2 class="text-xl font-bold mb-4">Mandamientos Anti-Falla</h2>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-[10px] leading-relaxed">
+                    <div class="bg-rose-800/50 p-3 rounded-xl border border-rose-700">
+                        <p><strong>1. PROHIBIDO:</strong> Migrar a producción sin un paso previo por el ambiente QA del cliente.</p>
+                    </div>
+                    <div class="bg-rose-800/50 p-3 rounded-xl border border-rose-700">
+                        <p><strong>2. OBLIGATORIO:</strong> El RC debe ser el mismo que se probó; no se aceptan cambios de última hora.</p>
+                    </div>
+                    <div class="bg-rose-800/50 p-3 rounded-xl border border-rose-700">
+                        <p><strong>3. CRÍTICO:</strong> Consultoría debe validar al menos 10 procesos clave de negocio antes del Go-Live.</p>
+                    </div>
+                    <div class="bg-rose-800/50 p-3 rounded-xl border border-rose-700">
+                        <p><strong>4. BLOQUEANTE:</strong> Sin backup verificado de la DB Legacy, no se inicia el proceso de carga.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-slate-900 text-slate-100 p-8 rounded-3xl shadow-lg">
+                <h2 class="text-xl font-bold mb-4 text-indigo-400">Escalamiento a PMO</h2>
+                <div class="space-y-3 text-[11px]">
+                    <div class="flex items-center gap-3 border-b border-slate-700 pb-2">
+                        <span class="w-3 h-3 bg-rose-500 rounded-full"></span>
+                        <p><strong>Nivel 1:</strong> Bug bloqueante sin resolución en > 48hrs (Pasa a Director de Producto).</p>
+                    </div>
+                    <div class="flex items-center gap-3 border-b border-slate-700 pb-2">
+                        <span class="w-3 h-3 bg-amber-500 rounded-full"></span>
+                        <p><strong>Nivel 2:</strong> Negativa del cliente a otorgar ambientes de prueba (Pasa a Account Manager).</p>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <span class="w-3 h-3 bg-indigo-500 rounded-full"></span>
+                        <p><strong>Nivel 3:</strong> Inconsistencia masiva en datos migrados (Pasa a Comité Técnico Global).</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        const steps = {
+            1: {
+                title: "1. Preparación de Terreno",
+                icon: "🏗️",
+                color: "indigo",
+                content: `
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <h4 class="font-bold text-indigo-900 mb-2">Checklist Implementación:</h4>
+                            <ul class="space-y-1 text-[11px]">
+                                <li>• Backup de Legacy verificado.</li>
+                                <li>• Servidor QA Global aprovisionado.</li>
+                                <li>• Accesos ADMIN de base de datos confirmados.</li>
+                            </ul>
+                        </div>
+                        <div class="bg-white/50 p-3 rounded-xl">
+                            <h4 class="font-bold text-indigo-900 mb-1">Insumo Producto:</h4>
+                            <p class="text-[11px]">Manual de configuración de arquitectura para Global v4.x.</p>
+                        </div>
+                    </div>`
+            },
+            2: {
+                title: "2. Validación e Iteración",
+                icon: "🧪",
+                color: "amber",
+                content: `
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <h4 class="font-bold text-amber-900 mb-2">Ciclo Consultoría:</h4>
+                            <ul class="space-y-1 text-[11px]">
+                                <li>• Ejecución de scripts de migración.</li>
+                                <li>• Reporte de desviaciones en Jira.</li>
+                                <li>• Validación de saldos y catálogos.</li>
+                            </ul>
+                        </div>
+                        <div class="bg-white/50 p-3 rounded-xl border border-amber-100">
+                            <h4 class="font-bold text-amber-900 mb-1">Feedback Loop:</h4>
+                            <p class="text-[11px]">QA Central valida los fixes de Producto antes de enviarlos a la Implementación.</p>
+                        </div>
+                    </div>`
+            },
+            3: {
+                title: "3. Certificación Final (UAT)",
+                icon: "🛡️",
+                color: "purple",
+                content: `
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <h4 class="font-bold text-purple-900 mb-2">Hito Decisivo:</h4>
+                            <ul class="space-y-1 text-[11px]">
+                                <li>• Firma de acta de conformidad (QA Client).</li>
+                                <li>• Lista de "Bugs Conocidos" aceptada.</li>
+                                <li>• Congelamiento de código (Code Freeze).</li>
+                            </ul>
+                        </div>
+                        <div class="bg-purple-100 p-3 rounded-xl border border-purple-200">
+                            <h4 class="font-bold text-purple-900 mb-1 italic">Go/No-Go:</h4>
+                            <p class="text-[11px]">Decisión unánime entre Consultoría y PMO para proceder a Producción.</p>
+                        </div>
+                    </div>`
+            },
+            4: {
+                title: "4. Despliegue y Soporte",
+                icon: "🚀",
+                color: "emerald",
+                content: `
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <h4 class="font-bold text-emerald-900 mb-2">Puesta en Marcha:</h4>
+                            <ul class="space-y-1 text-[11px]">
+                                <li>• Migración a ambiente productivo.</li>
+                                <li>• Soporte en sitio / Remoto intensivo (72hrs).</li>
+                                <li>• Traspaso oficial a Soporte N1/N2.</li>
+                            </ul>
+                        </div>
+                        <div class="bg-white/50 p-3 rounded-xl">
+                            <h4 class="font-bold text-emerald-900 mb-1">Mantenimiento:</h4>
+                            <p class="text-[11px]">Cualquier ajuste posterior se inicia nuevamente desde el ambiente QA.</p>
+                        </div>
+                    </div>`
+            }
+        };
+
+        function showDetail(id) {
+            document.querySelectorAll('.step-card').forEach(s => s.classList.remove('active-step'));
+            document.getElementById(`step${id}`).classList.add('active-step');
+            
+            const data = steps[id];
+            const panel = document.getElementById('detail-panel');
+            const label = document.getElementById('current-phase-label');
+            
+            panel.style.opacity = 0;
+            setTimeout(() => {
+                panel.className = `p-6 bg-${data.color}-50 rounded-2xl border border-${data.color}-100 min-h-[220px] transition-all duration-300`;
+                panel.innerHTML = `
+                    <div class="flex gap-4 items-start">
+                        <div class="w-10 h-10 bg-${data.color}-600 rounded-lg flex items-center justify-center text-white text-lg shadow-lg">${data.icon}</div>
+                        <div class="flex-grow">
+                            <h3 class="text-lg font-bold text-slate-900">${data.title}</h3>
+                            <div class="mt-3 text-slate-600">${data.content}</div>
+                        </div>
+                    </div>`;
+                label.textContent = data.title.split('.')[1].trim().toUpperCase();
+                label.className = `font-bold text-${data.color}-600`;
+                panel.style.opacity = 1;
+            }, 150);
+        }
+
+        // Chart Logic
+        let health = 50;
+        let chartInstance;
+
+        function initChart() {
+            const ctx = document.getElementById('qaChart').getContext('2d');
+            chartInstance = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    datasets: [{
+                        data: [health, 100 - health],
+                        backgroundColor: ['#4f46e5', '#f1f5f9'],
+                        borderWidth: 0,
+                        cutout: '80%'
+                    }]
+                },
+                options: { 
+                    responsive: true, maintainAspectRatio: false,
+                    plugins: { legend: { display: false }, tooltip: { enabled: false } }
+                }
+            });
+        }
+
+        function simulateAction(type) {
+            if(type === 'bug') health = Math.max(10, health - 20);
+            else if(type === 'qa-internal') health = Math.min(90, health + 15);
+            else health = Math.min(100, health + 20);
+            
+            chartInstance.data.datasets[0].data = [health, 100 - health];
+            
+            let color = '#4f46e5';
+            let verdict = "ESTADO: EVALUANDO RIESGO";
+            let vClass = "bg-slate-100 text-slate-500 border-slate-200";
+
+            if(health > 80) {
+                color = '#10b981';
+                verdict = "ESTADO: LISTO PARA MIGRAR";
+                vClass = "bg-emerald-100 text-emerald-700 border-emerald-200";
+            } else if(health < 40) {
+                color = '#f43f5e';
+                verdict = "ESTADO: BLOQUEADO POR QA";
+                vClass = "bg-rose-100 text-rose-700 border-rose-200";
+            }
+            
+            chartInstance.data.datasets[0].backgroundColor[0] = color;
+            chartInstance.update();
+            
+            document.getElementById('health-pct').textContent = `${health}%`;
+            document.getElementById('health-pct').style.color = color;
+            document.getElementById('status-verdict').textContent = verdict;
+            document.getElementById('status-verdict').className = `text-center p-3 rounded-xl text-[10px] font-bold border uppercase ${vClass}`;
+        }
+
+        window.onload = () => {
+            showDetail(1);
+            initChart();
+        };
+    </script>
+</body>
+</html>
